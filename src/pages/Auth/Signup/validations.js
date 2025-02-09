@@ -1,17 +1,17 @@
-import * as yup from "yup";
+import * as Yup from "yup";
 
-const validations = yup.object().shape({
-	email: yup
+const validations = Yup.object().shape({
+	email: Yup
 		.string()
 		.email("Gerçerli bir email girin.")
 		.required("Zorunlu alan."),
-	password: yup
+	password: Yup
 		.string()
 		.min(5, "Parolanız en az 5 karakter olmalıdır")
 		.required(),
-	passwordConfirm: yup
+	passwordConfirm: Yup
 		.string()
-		.oneOf([yup.ref("password")], "Parolalar uyuşmuyor.")
+		.oneOf([Yup.ref("password")], "Parolalar uyuşmuyor.")
 		.required(),
 });
 
