@@ -1,12 +1,12 @@
 import React from "react";
-import { Box, Image, Button, Text, Flex } from "@chakra-ui/react";
+import { Box, Image, Button, Text, Flex, Link } from "@chakra-ui/react";
 import { useBasket } from "../../contexts/BasketContext";
 
 function Basket() {
-	const { items, removeFromBasket } = useBasket();
-	const totalPrice = items.reduce((acc, item) => acc + item.price, 0);
+  const { items, removeFromBasket } = useBasket();
+  const totalPrice = items.reduce((acc, item) => acc + item.price, 0);
   return (
-	<Box p="4">
+    <Box p="4">
       <Text fontSize="2xl" mb="4">
         Your Basket
       </Text>
@@ -15,30 +15,44 @@ function Basket() {
         <Text>Your basket is empty.</Text>
       ) : (
         items.map((item) => (
-          <Flex
-            key={item._id}
-            borderWidth="1px"
-            borderRadius="lg"
-            p="4"
-            mb="4"
-            alignItems="center"
-          >
-            <Image
-              boxSize="100px"
-              objectFit="cover"
-              src={item.photos[0]}
-              alt={item.title}
-              mr="4"
-            />
-            <Box flex="1">
-              <Text fontWeight="semibold">{item.title}</Text>
-              <Text>{item.description}</Text>
-              <Text>{item.price}$</Text>
-            </Box>
-            <Button colorScheme="red" onClick={() => removeFromBasket(item)}>
-              Remove
-            </Button>
-          </Flex>
+          <Box key={item._id} mb="4">
+            <Link
+              to={`/product/${item._id}`}
+              _hover={{
+                textDecoration: "none", // Alt çizgiyi kaldırdık
+                color: "black", // Rengi koyu siyah yaptık
+              }}
+            >
+              <Flex
+                borderWidth="1px"
+                borderRadius="lg"
+                p="4"
+                alignItems="center"
+                justifyContent="space-between" // Bu satır butonun sağa yerleşmesini sağlar
+              >
+                <Flex alignItems="center">
+                  <Image
+                    boxSize="100px"
+                    objectFit="cover"
+                    src={item.photos[0]}
+                    alt={item.title}
+                    mr="4"
+                  />
+                  <Box>
+                    <Text fontWeight="semibold">{item.title}</Text>
+                    <Text>{item.description}</Text>
+                    <Text>{item.price}$</Text>
+                  </Box>
+                </Flex>
+                <Button
+                  colorScheme="red"
+                  onClick={() => removeFromBasket(item)}
+                >
+                  Remove
+                </Button>
+              </Flex>
+            </Link>
+          </Box>
         ))
       )}
 
@@ -49,7 +63,6 @@ function Basket() {
       )}
     </Box>
   );
- 
 }
 
 export default Basket;
