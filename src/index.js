@@ -9,34 +9,34 @@ import { ReactQueryDevtools } from "react-query/devtools";
 
 // contexts
 import { AuthProvider } from "./contexts/AuthContext";
-import { BasketProvider } from "./contexts/BasketContext";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { BasketProvider } from "./contexts/BasketContext";
 
 const queryClient = new QueryClient({
-	defaultOptions: {
-		queries: {
-			refetchOnMount: false,
-			refetchOnWindowFocus: false,
-		},
-	},
+  defaultOptions: {
+    queries: {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
+  },
 });
 
 ReactDOM.render(
-	<QueryClientProvider client={queryClient}>
-		<ChakraProvider>
-			<AuthProvider>
-				<BasketProvider>
-					<App />
-				</BasketProvider>
-			</AuthProvider>
-		</ChakraProvider>
+  <QueryClientProvider client={queryClient}>
+    <ChakraProvider>
+      <AuthProvider>
+        <BasketProvider>
+          <App />
+        </BasketProvider>
+      </AuthProvider>
+    </ChakraProvider>
 
-		<ReactQueryDevtools initialIsOpen={false} />
-	</QueryClientProvider>,
-	document.getElementById("root")
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

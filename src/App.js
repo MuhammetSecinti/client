@@ -10,7 +10,7 @@ import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 
 import Profile from "./pages/Profile";
-// import Basket from "./pages/Basket";
+import Basket from "./pages/Basket";
 // import Admin from "./pages/Admin";
 // import Error404 from "./pages/Error404";
 import Signin from "./pages/Auth/Signin";
@@ -28,12 +28,11 @@ function App() {
             <Route path="/product/:product_id" component={ProductDetail} />
             <Route path="/login" component={Signin} />
             <Route path="/register" component={Signup} />
-           
 
-            {/* <Route path="/basket" component={Basket} /> */}
-						<ProtectedRoute path="/profile" component={Profile} />
-						{/* <ProtectedRoute path="/admin" component={Admin} admin={true} /> */}
-						{/* <Route path="*" component={Error404} /> */}
+            <Route path="/basket" component={Basket} />
+            <ProtectedRoute path="/profile" component={Profile} />
+            {/* <ProtectedRoute path="/admin" component={Admin} admin={true} /> */}
+            {/* <Route path="*" component={Error404} /> */}
           </Switch>
         </div>
       </div>

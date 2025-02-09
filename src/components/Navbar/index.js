@@ -8,15 +8,20 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Badge,
+  IconButton,
 } from "@chakra-ui/react";
 
+// import { FiShoppingCart } from "react-icons/fi";
+
 import { useAuth } from "../../contexts/AuthContext";
-// import { useBasket } from "../../contexts/BasketContext";
+import { useBasket } from "../../contexts/BasketContext";
 
 function Navbar() {
   const history = useHistory();
   const { loggedIn, logout } = useAuth();
-  console.log(loggedIn);
+ 
+  const { items } = useBasket();
   const handleLogout = async () => {
     logout();
     history.push("/login");
@@ -46,20 +51,25 @@ function Navbar() {
         )}
 
         {loggedIn && (
-          <Menu>
-            <MenuButton>
-              <Avatar size="sm" />
-            </MenuButton>
-            <MenuList>
-              <MenuItem>
-                <Link to="/profile">Profile</Link>
-              </MenuItem>
+          <>
+            <Menu>
+              <MenuButton mr="4" as={IconButton} variant="outline">
+                <Badge ml="1" colorScheme="red">
+                  {items.length}
+                </Badge>
+              </MenuButton>
+              <MenuList>
+                <MenuItem>
+                  <Link to="/basket">Go to Basket</Link>
+                </MenuItem>
+              </MenuList>
+            </Menu>
 
-              <MenuItem>
-                <Link onClick={handleLogout}>Logout</Link>
-              </MenuItem>
-            </MenuList>
-          </Menu>
+            <Avatar size="sm" />
+            <Button onClick={handleLogout} colorScheme="pink" ml="4">
+              Logout
+            </Button>
+          </>
         )}
       </div>
     </nav>
