@@ -13,8 +13,14 @@ import {
 import { useFormik } from "formik";
 import validationSchema from "./validations";
 import { fetchRegister } from "../../../api";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useHistory } from 'react-router-dom';
+
+
 
 function Signup() {
+  const history = useHistory();
+  const {login} = useAuth()
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -25,7 +31,9 @@ function Signup() {
     onSubmit: async (values, bag) => {
       try {
         const registerResponse = await fetchRegister({email:values.email, password:values.password})
+        login(registerResponse)
         console.log(registerResponse);
+        history.push('/');
       } catch (error) {
         bag.setErrors({general : error.response.data.message})
       }
@@ -107,7 +115,7 @@ function Signup() {
         <a href="/login" style={{ color: "teal" }}>
           Login here
         </a>
-        .
+        
       </Text>
     </Box>
   );

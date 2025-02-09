@@ -41,7 +41,7 @@ const AuthProvider = ({ children }) => {
 		localStorage.removeItem("access-token");
 		localStorage.removeItem("refresh-token");
 
-    callback()
+    // callback()
 	};
 
 	const values = {

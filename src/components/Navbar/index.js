@@ -1,11 +1,26 @@
 import styles from "./styles.module.css";
-import { Link } from "react-router-dom";
-import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Link, useHistory } from "react-router-dom";
 
-// import { useAuth } from "../../contexts/AuthContext";
+import {
+  Button,
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/react";
+
+import { useAuth } from "../../contexts/AuthContext";
 // import { useBasket } from "../../contexts/BasketContext";
 
 function Navbar() {
+  const history = useHistory();
+  const { loggedIn, logout } = useAuth();
+  console.log(loggedIn);
+  const handleLogout = async () => {
+    logout();
+    history.push("/login");
+  };
   return (
     <nav className={styles.nav}>
       <div className={styles.left}>
@@ -19,12 +34,33 @@ function Navbar() {
         </ul>
       </div>
       <div className={styles.right}>
-        <Link to="/login">
-          <Button colorScheme="pink">Login</Button>
-        </Link>
-        <Link to="/register">
-          <Button colorScheme="pink">Register</Button>
-        </Link>
+        {!loggedIn && (
+          <>
+            <Link to="/login">
+              <Button colorScheme="pink">Login</Button>
+            </Link>
+            <Link to="/register">
+              <Button colorScheme="pink">Register</Button>
+            </Link>
+          </>
+        )}
+
+        {loggedIn && (
+          <Menu>
+            <MenuButton>
+              <Avatar size="sm" />
+            </MenuButton>
+            <MenuList>
+              <MenuItem>
+                <Link to="/profile">Profile</Link>
+              </MenuItem>
+
+              <MenuItem>
+                <Link onClick={handleLogout}>Logout</Link>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        )}
       </div>
     </nav>
   );
