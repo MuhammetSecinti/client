@@ -1,51 +1,43 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchProduct } from "../../api";
-import { Box, Text, Button } from "@chakra-ui/react";
-import moment from "moment";
-import ImageGallery from "react-image-gallery";
-import { useBasket } from "../../contexts/BasketContext";
+import styles from "./styles.module.css";
 
 function ProductDetail() {
-	const { product_id } = useParams();
-	const { addToBasket, items } = useBasket();
+  const { product_id } = useParams();
 
-	const { isLoading, isError, data } = useQuery(["product", product_id], () =>
-		fetchProduct(product_id)
-	);
+  const { isLoading, isError, data } = useQuery(["product", product_id], () =>
+    fetchProduct(product_id)
+  );
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (isError) {
+    return <div>Error.</div>;
+  }
+  console.log(data);
+  const formattedDate = new Date(data.createdAt).toLocaleDateString();
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
-
-	if (isError) {
-		return <div>Error.</div>;
-	}
-
-	const findBasketItem = items.find((item) => item._id === product_id);
-	const images = data.photos.map((url) => ({ original: url }));
-
-	return (
-		<div>
-			<Button
-				colorScheme={findBasketItem ? "pink" : "green"}
-				onClick={() => addToBasket(data, findBasketItem)}
-			>
-				{findBasketItem ? "Remove from basket" : "Add to basket"}
-			</Button>
-
-			<Text as="h2" fontSize="2xl">
-				{data.title}
-			</Text>
-			<Text>{moment(data.createdAt).format("DD/MM/YYYY")}</Text>
-
-			<p>{data.description}</p>
-
-			<Box margin="10">
-				<ImageGallery items={images} showThumbnails={false} />
-			</Box>
-		</div>
-	);
+  return (
+    <div className={styles.productDetail}>
+      <div className={styles.productImage}>
+        <img src={data.photos} alt={data.title} />
+      </div>
+      <div className={styles.productInfo}>
+        <h1 className={styles.productTitle}>{data.title}</h1>
+        <p className={styles.productDescription}>{data.description}</p>
+        <div className={styles.productPrice}>
+          <span className={styles.price}>${data.price}</span>
+        </div>
+        <div className={styles.productDate}>
+          <p>
+            <strong>Release Date:</strong> {formattedDate}
+          </p>
+        </div>
+        <button className={styles.buyNowBtn}>Buy Now</button>
+      </div>
+    </div>
+  );
 }
 
 export default ProductDetail;
