@@ -34,6 +34,7 @@ export const BasketProvider = ({ children }) => {
   const clearBasket = () => {
     setItems([]);
   };
+  
 
   return (
     <BasketContext.Provider
