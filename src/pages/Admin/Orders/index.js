@@ -27,6 +27,7 @@ function Orders() {
 		return <div>Error {error.message}</div>;
 	}
 
+
 	return (
 		<div>
 			<Text fontSize="2xl" p={5}>

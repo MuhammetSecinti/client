@@ -10,53 +10,73 @@ import {
   MenuItem,
   Badge,
   IconButton,
+  Icon,
+  Flex,
+  Box
 } from "@chakra-ui/react";
 
-// import { FiShoppingCart } from "react-icons/fi";
-
+import { FiShoppingCart } from "react-icons/fi";
 import { useAuth } from "../../contexts/AuthContext";
 import { useBasket } from "../../contexts/BasketContext";
 
 function Navbar() {
   const history = useHistory();
-  const { loggedIn, logout } = useAuth();
- 
+  const { loggedIn, logout, user } = useAuth();
+
   const { items } = useBasket();
   const handleLogout = async () => {
     logout();
     history.push("/login");
   };
   return (
-    <nav className={styles.nav}>
-      <div className={styles.left}>
-        <div className="logo">
+    <Flex
+      as="nav"
+      align="center"
+      justify="space-between"
+      p="4"
+      className={styles.nav}
+    >
+      {/* Sol Taraf */}
+      <Flex align="center" className={styles.left}>
+        <Box className="logo" mr="8">
           <Link to="/">eCoomerce</Link>
-        </div>
-        <ul className={styles.menu}>
-          <li>
-            <Link to="/">Products</Link>
-          </li>
-        </ul>
-      </div>
-      <div className={styles.right}>
-        {!loggedIn && (
+        </Box>
+        <Link to="/">Products</Link>
+      </Flex>
+
+      {/* Sağ Taraf */}
+      <Flex align="center" className={styles.right}>
+
+        {!loggedIn ? (
           <>
             <Link to="/login">
-              <Button colorScheme="pink">Login</Button>
+              <Button colorScheme="pink" mr="4">
+                Login
+              </Button>
             </Link>
             <Link to="/register">
               <Button colorScheme="pink">Register</Button>
             </Link>
           </>
-        )}
-
-        {loggedIn && (
+        ) : (
           <>
+          {
+            user?.role === 'admin' && (
+              <Link to='/admin'>
+                <Button>
+                  Admin
+                </Button>
+              </Link>
+            )
+          }
             <Menu>
-              <MenuButton mr="4" as={IconButton} variant="outline">
-                <Badge ml="1" colorScheme="red">
-                  {items.length}
-                </Badge>
+              <MenuButton as={IconButton} variant="outline" mr="4">
+                <Flex align="center">
+                  <FiShoppingCart size="20px" style={{ marginRight: "8px" }} />
+                  <Badge ml="1" colorScheme="red">
+                    {items.length}
+                  </Badge>
+                </Flex>
               </MenuButton>
               <MenuList>
                 <MenuItem>
@@ -65,14 +85,21 @@ function Navbar() {
               </MenuList>
             </Menu>
 
-            <Avatar size="sm" />
-            <Button onClick={handleLogout} colorScheme="pink" ml="4">
-              Logout
-            </Button>
+            <Menu>
+              <MenuButton>
+                <Avatar size="sm" />
+              </MenuButton>
+              <MenuList>
+                <MenuItem>
+                  <Link to="/profile">Profile</Link>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </MenuList>
+            </Menu>
           </>
         )}
-      </div>
-    </nav>
+      </Flex>
+    </Flex>
   );
 }
 
